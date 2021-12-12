@@ -31,13 +31,13 @@ create table population_data as
 	select c.country, c.population_density, c.median_age_2018, e.gdp_2020, e2.Average_GINI,	e3.Average_child_mortality
 	from countries c	
 	join (
-    	select e.country, e.gdp as GDP_2020
-    	from economies e
-    	where year = 2020
-    	and e.gdp is not NULL
+    		select e.country, e.gdp as GDP_2020
+    		from economies e
+    		where year = 2020
+    		and e.gdp is not NULL
 		) 
 	e on c.country = e.country
-    join (
+    	join (
 		select e2.country, round(AVG(e2.gini),2) as Average_GINI
 		from economies e2
 		where e2.gini != 0
@@ -58,10 +58,10 @@ create table religions_by_country AS
 	select rel.country , rel.religion , round(rel.population*100/r2.total_population, 2) as religion_share
 	from religions rel 
 	join ( 
-		 select rel.country , rel.year,  sum(rel.population) as total_population
-    	 from religions rel
-   		 where rel.year = 2020 and rel.country != 'All Countries'
-   		 group by rel.country
+		select rel.country , rel.year,  sum(rel.population) as total_population
+    	 	from religions rel
+  		where rel.year = 2020 and rel.country != 'All Countries'
+		group by rel.country
    		 ) 
 	r2 on rel.country = r2.country
 	and rel.year = r2.year
@@ -72,9 +72,9 @@ create table religions_by_country AS
 create table year_difference as
 	select a.country, a.life_exp_1965 , b.life_exp_2015, round(b.life_exp_2015 - a.life_exp_1965, 2) as life_exp_difference
 	from (
-    	select le.country, le.life_expectancy as life_exp_1965
-    	from life_expectancy le 
-    	where year = 1965
+    		select le.country, le.life_expectancy as life_exp_1965
+    		from life_expectancy le 
+    		where year = 1965
    		 ) 
 	a join (
 		select le.country, le.life_expectancy as life_exp_2015
@@ -90,8 +90,8 @@ create table weather_conditions as
 	from countries c
 	join (
 		select w.city , w.date , max(w.wind) as max_daily_wind 
-        from weather w 
-        group by w.city, w.date
+        	from weather w 
+       		group by w.city, w.date
         )
 	w on c.capital_city = w.city 
 	join (
